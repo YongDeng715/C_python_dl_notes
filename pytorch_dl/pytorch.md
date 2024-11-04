@@ -89,16 +89,14 @@ Parameters：
 
 一维卷积层，输入的尺度是 $(N, C_{in}, L_{in})$，输出尺度 $(N, C_{out}, L_{out})$ 的计算方式：
 
-$$
-out(N_i, C_{out_j}) = bias(C_{out_j}) + \sum^{C_{in}-1}_{k=0} weight(C_{out_j}, k) \bigotimes input(N_i, k) 
+$$out(N_i, C_{out_j}) = bias(C_{out_j}) + \sum^{C_{in}-1}_{k=0} weight(C_{out_j}, k) \bigotimes input(N_i, k) 
 $$
 
 输入输出shape: 
 Input: $(N, C_{in}, L_{in})$, Output: $(N, C_{out}, L_{out})$ 
 
-输入输出的计算方式：
-$$
-L_{out} = floor((L_{in} + 2\cdot padding - dilation\cdot (kernel\_size-1) - 1) / stride + 1)
+输入输出的计算方式:  
+$$L_{out} = floor((L_{in} + 2\cdot padding - dilation\cdot (kernel\_size-1) - 1) / stride + 1)
 $$
 
 变量:
@@ -109,13 +107,13 @@ $$
 
 二维卷积层, 输入的尺度是 $(N, C_{in}, H, W)$，输出尺度 $(N, C_{out}, H_{out}, W_{out})$ 的计算方式：
 
-$$
-out(N_i, C_{out_j}) = bias(C_{out_j}) + \sum^{C_{in}-1}_{k=0} weight(C_{out_j}, k)\bigotimes input(N_i, k)
+$$out(N_i, C_{out_j}) = bias(C_{out_j}) + \sum^{C_{in}-1}_{k=0} weight(C_{out_j}, k)\bigotimes input(N_i, k)
 $$
 
 shape:
 input: (N, C_in, H_in, W_in)
 output: (N, C_out, H_out, W_out)
+
 $$H_{out} = floor((H_{in}+2\cdot padding[0]-dilation[0]\cdot (kernel\_size[0]-1)-1)/stride[0] + 1)
 $$
 
