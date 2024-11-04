@@ -61,3 +61,33 @@ args = parser.parse_args()
 print(args.name)
 print(args.age)
 ```
+
+
+## Python Class 
+
+ `@classmethod` 必须将一个类对象的引用作为第一个参数，其中 `cls` 代表的是类本身，而不是类的实例。
+
+而 `@staticmethod` 可以不带任何参数, 调用静态方法，无需创建类的实例.
+
+```python
+class Date(object):
+    def __init__(self, day=0, month=0, year=0):
+        self.day = day
+        self.month = month
+        self.year = year
+
+    @classmethod
+    def from_string(cls, date_as_string):
+        day, month, year = map(int, date_as_string.split('-'))
+        date1 = cls(day, month, year)
+        return date1
+
+    @staticmethod
+    def is_date_valid(date_as_string):
+        day, month, year = map(int, date_as_string.split('-'))
+        return day <= 31 and month <= 12 and year <= 3999
+
+
+date2 = Date.from_string('11-09-2012')
+is_date = Date.is_date_valid('11-09-2012')
+```
