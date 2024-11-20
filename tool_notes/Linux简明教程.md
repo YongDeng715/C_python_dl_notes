@@ -1,6 +1,18 @@
 # Linux Concise Tutorial
 
-[TOC]
+- [Linux Concise Tutorial](#linux-concise-tutorial)
+  - [Linux 简介](#linux-简介)
+    - [文件结构](#文件结构)
+    - [常用命令(必须熟记)](#常用命令必须熟记)
+    - [辅助指令](#辅助指令)
+  - [Linux 常用操作](#linux-常用操作)
+    - [目录操作](#目录操作)
+    - [文件操作命令](#文件操作命令)
+    - [打包和解压命令](#打包和解压命令)
+    - [网络命令](#网络命令)
+  - [Vim 命令基础](#vim-命令基础)
+  - [Linux Shell基础](#linux-shell基础)
+  - [参考资料](#参考资料)
 
 ## Linux 简介
 ### 文件结构
@@ -164,7 +176,7 @@ diswon your_command
 ### 打包和解压命令
 
 ```bash
-  .zi、.rar         //windows系统中压缩文件的扩展名
+  .zi/.rar          //windows系统中压缩文件的扩展名
   .tar              //Linux中打包文件的扩展名
   .gz               //Linux中压缩文件的扩展名
   .tar.gz           //Linux中打包并压缩文件的扩展名
@@ -244,6 +256,8 @@ Study Reference:
 ```
 
 ## Linux Shell基础 
+
+[点击此处跳转到Linux Shell基础教程](LinuxShellBasic.md) 
 
 Study Reference:  
 1. [Shell脚本：Linux Shell脚本学习指南](https://c.biancheng.net/shell/); 
