@@ -10,6 +10,7 @@
     - [文件操作命令](#文件操作命令)
     - [打包和解压命令](#打包和解压命令)
     - [网络命令](#网络命令)
+    - [权限指令](#权限指令)
   - [Vim 命令基础](#vim-命令基础)
   - [Linux Shell基础](#linux-shell基础)
   - [参考资料](#参考资料)
@@ -220,6 +221,60 @@ scp /opt/data.txt  192.168.1.101:/opt/
 scp -r /data/x.py root@192.168.1.101:/media/datc/opt/
 
 ```
+
+### 权限指令
+
+```bash
+chmod [who][operator][permissions] file
+```
+格式解释:
+- who 表示修改对象：
+  - u = 所有者 (user)
+  - g = 所属组 (group)
+  - o = 其他用户 (others)
+  - a = all/all users (等于 u+g+o) 
+- operator 表示操作：[opensource.com](https://opensource.com/article/19/8/linux-chmod-command)
+  - + 增加权限
+  - - 移除权限
+  - = 设置为精确权限（覆盖原权限）
+- permissions 表示权限类型：
+  - r = 读 (read)
+  - w = 写 (write)
+  - x = 执行 (execute)
+
+- 数字 (八进制) 模式：[theserverside.com](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/how-permissions-chmod-with-numbers-command-explained-777-rwx-unix)  
+  每一类用户的权限用一个数字表示，三个数字对应 `u/g/o`, 数字由下列相加组成：
+  - r = 4
+  - w = 2
+  - x = 1
+
+示例代码：
+```bash
+chmod u+x script.sh   # 给文件的所有者增加执行权限。 
+chmod o-r file.txt    # 移除其他用户的读权限并保留所有者权限
+chmod go-w file.txt   # 移除所属组和其他用户的写权限。 
+chmod u=rwx,go= file  # 设置所有者为 rwx，组和其他用户没有权限。
+chmod 754 file.txt    # 表示：所有者 rwx (7)、组 r-x (5)、其他 r-- (4)。
+chmod 644 file.txt    # 将文件设为所有者读写，组与其他用户只读
+# 递归修改目录及其子项，将所有用户设为可读写（通常不推荐 777，因为风险高）
+chmod -R 777 /path/to/dir
+```
+**权限如何影响文件和目录**:
+- 文件：
+  - r 能读取内容
+  - w 能修改内容
+  - x 能执行（如果是可执行文件／脚本）
+- 目录：权限语义稍有不同[redhat.com](https://www.redhat.com/en/blog/linux-file-permissions-explained)： 
+  - r：允许列出目录内容（如 ls）
+  - w：允许在目录中创建、删除文件
+  - x：允许进入目录 (cd)、访问目录中的文件／子目录
+
+特殊位权限（扩展）: 还有一些特殊权限位，包括 [redhat.com](https://www.redhat.com/en/blog/linux-file-permissions-explained)
+  - setuid：执行该文件时，以文件所有者的权限执行。
+  - setgid：执行/创建该目录下文件时，以所属组执行／继承。
+  - sticky bit：通常用于目录，表示在该目录中只有文件所有者、目录所有者或 root 能删除其中文件。
+  
+  例如， `chmod 1755 dir` 表示 sticky bit + u/g/o = rwx/r-x/r-x
 
 ## Vim 命令基础
 
