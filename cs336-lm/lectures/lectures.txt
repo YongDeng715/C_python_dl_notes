@@ -1,0 +1,4 @@
+
+You can find lecture slides on https://github.com/stanford-cs336/spring2025-lectures
+
+lecture homepage: https://stanford-cs336.github.io/spring2025/
