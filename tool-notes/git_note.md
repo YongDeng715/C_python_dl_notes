@@ -1,6 +1,16 @@
 # Git Note
 
-[toc]
+## Table of Contents
+- [Git Note](#git-note)
+  - [Table of Contents](#table-of-contents)
+  - [Git Basics](#git-basics)
+  - [Official method](#official-method)
+  - [Github初学者操作](#github初学者操作)
+  - [Clash 本地代码配置 Git](#clash-本地代码配置-git)
+  - [Github操作：多个本地和远程分支管理](#github操作多个本地和远程分支管理)
+    - [1. Github的代码管理结构](#1-github的代码管理结构)
+    - [2. 从本地获取和上传到不同远程分支操作](#2-从本地获取和上传到不同远程分支操作)
+    - [3. 其他](#3-其他)
 
 ## Git Basics
 
@@ -167,7 +177,84 @@ GPG 密钥用于签署和验证 Git 提交的真实性。以下是生成 GPG 密
    uid                          Your Name <you@example.com>
    ssb   4096R/1234567890ABCDEF 2024-06-18
    ```
+
 4. 导出你的公钥，并将其添加到 GitHub： ``gpg --armor --export ABCDEF1234567890``
+
+## Clash 本地代码配置 Git
+reference: [配置Git 使用Clash 代理](https://lihuaxianxue.space/post/8c98b106)
+
+1. 关于常规检查
+检查 git 安装版本 以及 clash 代理端口
+
+终端 -> `git --version` -> `git version 2.40.0.windows.1` 表面已经安装
+clash 主页面 -> 常规 -> 端口 可以 查看 `mixed-port` 端口号
+或者检查配置文件，通常为 7890 端口
+```plantext
+mixed-port: 7890
+```
+
+2. 配置 Git 使用 Clash 代理
+* 打开命令行（CMD 或 Git Bash）。
+* 设置 Git 的全局代理，使用 HTTP 协议（因为 Clash 的 mixed-port 支持 HTTP）：
+```bash
+git config --global http.proxy http://127.0.0.1:7890
+git config --global https.proxy http://127.0.0.1:7890
+```
+* 关于上述指令解释：
+  * `http.proxy` 和 `https.proxy`：设置 HTTP/HTTPS 协议的代理（GitHub 使用 HTTPS）;
+  * `127.0.0.1:7890`：Clash 的本地代理地址和端口
+
+* 检查 Git 是否正确应用了代理设置：
+```bash
+git config --global --get http.proxy
+git config --global --get https.proxy
+# 返回 `http://127.0.0.1:7890`，说明配置成功
+```
+4. 测试代理连接
+
+测试 Git 是否能通过代理访问 GitHub：
+```bash
+git ls-remote https://github.com/{User}/{RepositoryName}.git
+```
+
+成功输出示例:
+```PLANTEXT
+00c87001b3c99bec7a6f1ef4b342c9a4f3d668d7        HEAD
+00c87001b3c99bec7a6f1ef4b342c9a4f3d668d7        refs/heads/main
+...
+```
+
+如果失败（例如超时或连接错误），检查 Clash 是否运行，或者端口是否正确
+
+5. 常见问题： Clash 未运行，或端口未监听 从而无法连接到 127.0.0.1:7890
+
+如果端口被占用，修改 Clash 配置中的 mixed-port（例如改为 7891），然后更新 Git 配置:
+```bash
+git config --global http.proxy http://127.0.0.1:7891
+git config --global https.proxy http://127.0.0.1:7891
+```
+
+不需要代理时如何取消（清除代理设置指令）：
+```bash
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+```
+
+6. 使用环境变量临时设置
+
+CMD 指令：
+```bash
+set HTTP_PROXY=http://127.0.0.1:7890
+set HTTPS_PROXY=http://127.0.0.1:7890
+git clone https://github.com/{User}/{RepositoryName}.git
+```
+
+Git Bash 指令：
+```bash
+export HTTP_PROXY=http://127.0.0.1:7890
+export HTTPS_PROXY=http://127.0.0.1:7890
+git clone https://github.com/{User}/{RepositoryName}.git
+```
 
 ## Github操作：多个本地和远程分支管理
 
