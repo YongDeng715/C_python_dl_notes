@@ -4,21 +4,23 @@
 - [numpy, matplotlib tutorial](#numpy-matplotlib-tutorial)
   - [table of content](#table-of-content)
   - [numpy basics](#numpy-basics)
-    - [size / ndim / shape / dtype](#size--ndim--shape--dtype)
-  - [numpy 广播机制](#numpy-广播机制)
-    - [升降维度操作: squeeze / unsqueeze](#升降维度操作-squeeze--unsqueeze)
-  - [numpy 张量形状改变](#numpy-张量形状改变)
-    - [扁平化操作： revel / flatten / reshape](#扁平化操作-revel--flatten--reshape)
-    - [维度变化操作: transpose / moveaxis](#维度变化操作-transpose--moveaxis)
-    - [复制张量: repeat / tile](#复制张量-repeat--tile)
-    - [拼接操作： concatenate / stack / vstack / hstack / dstack](#拼接操作-concatenate--stack--vstack--hstack--dstack)
-      - [concatenate / stack](#concatenate--stack)
-      - [vstack / hstack / dstack](#vstack--hstack--dstack)
+    - [size/ndim/shape/dtype](#sizendimshapedtype)
+  - [numpy广播机制](#numpy广播机制)
+    - [升降维度操作:squeeze/newaxis](#升降维度操作squeezenewaxis)
+  - [numpy张量形状改变](#numpy张量形状改变)
+    - [扁平化操作:revel/flatten/reshape(-1)](#扁平化操作revelflattenreshape-1)
+    - [维度变化操作: transpose/moveaxis](#维度变化操作-transposemoveaxis)
+    - [复制张量: repeat/tile](#复制张量-repeattile)
+    - [拼接操作： concatenate/stack/vstack/hstack/dstack](#拼接操作-concatenatestackvstackhstackdstack)
+      - [concatenate/stack](#concatenatestack)
+      - [vstack/hstack/dstack](#vstackhstackdstack)
       - [conclusion](#conclusion)
       - [question](#question)
-  - [numpy save](#numpy-save)
-    - [np.save / np.load](#npsave--npload)
-    - [h5py.File](#h5pyfile)
+  - [numpy 数据持久化](#numpy-数据持久化)
+    - [np.save/np.load/np.savez](#npsavenploadnpsavez)
+    - [一些注意的问题](#一些注意的问题)
+    - [h5py.File处理超大规模数据](#h5pyfile处理超大规模数据)
+    - [h5py需要注意的问题](#h5py需要注意的问题)
   - [matplotlib tutorial](#matplotlib-tutorial)
     - [基础绘图](#基础绘图)
 
@@ -160,7 +162,7 @@ print(f"reshape(-1, order='F'): {reshaped_f}")  # [1 4 2 5 3 6]
 
 应用过程中的潜在问题，维度迷失陷阱：在面对高达四五阶（如视频帧序列）的数据结构时，连续多次调用 `swapaxes` 会彻底让开发人员丧失对轴向所代表的物理意义（是高还是宽？）的掌控。此时推荐使用语义更明确的 `moveaxis`。此外，对 1D 数组执行 `transpose` 毫无效果，不会将其变成列向量，必须使用 `np.newaxis`
 
-| 函数                       | 功能       | 参数       | 适用场景     | 性能    |
+| 函数                     | 功能       | 参数       | 适用场景     | 性能    |
 | ------------------------ | -------- | -------- | -------- | ----- |
 | `transpose(axes)`        | 完全重排所有轴  | 完整的轴顺序元组 | 需要完全重排维度 | 快（视图） |
 | `swapaxes(axis1, axis2)` | 交换两个指定轴  | 两个轴索引    | 只需交换两个维度 | 快（视图） |
@@ -540,12 +542,12 @@ with h5py.File('data.h5', 'w') as f:
 - `plt.subplots(nrows, ncols)` vs `plt.subplot()`：前者是当今力推的面向对象式范式，一键返回外层绘图布景窗口（fig）与轴控制句柄网格（axes），赋予开发者对各个子块独立精细渲染的能力；而后者是古老的 MATLAB 式遗留，容易造成全局状态状态机混乱与意外重写。
 - `ax.imshow(image_tensor)`：专门用于展现二维热力图或彩色三维结构像素帧的直观图像输出函数。
 
-| 函数                         | 功能       | 适用场景       | 返回值            |
+| 函数                       | 功能     | 适用场景   | 返回值            |
 | -------------------------- | -------- | ---------- | ----------------------- |
 | `plt.plot()`               | 绘制折线图    | 时间序列、函数曲线  | Line2D 对象列表      |
 | `plt.scatter()`            | 绘制散点图    | 数据分布、相关性分析 | PathCollection 对象 |
-| `plt.bar()` / `plt.barh()` | 柱状图/条形图 | 类别比较        | BarContainer 对象        |
-| `plt.hist()`               | 直方图       | 数据分布频率     | (counts, bins, patches)  |
+| `plt.bar()` / `plt.barh()` | 柱状图/条形图 | 类别比较        | BarContainer 对象       |
+| `plt.hist()`               | 直方图        | 数据分布频率    | (counts, bins, patches) |
 | `plt.imshow()`             | 显示图像/热力图 | 图像、矩阵可视化 | AxesImage 对象         |
 | `plt.subplots()`           | 创建多子图    | 复杂布局       | (Figure, Axes 或 Axes数组) |
 
